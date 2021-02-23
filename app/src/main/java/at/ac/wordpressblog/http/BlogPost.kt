@@ -21,6 +21,7 @@ data class BlogPost(
     val date: String,
     val title: Rendered,
     val content: Rendered,
+    val excerpt: Rendered,
     @Json(name="_embedded")
     val embedded: Embedded
 )

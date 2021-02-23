@@ -37,12 +37,10 @@ class BlogPostViewModel: ViewModel(){
     private fun getBlogPosts(){
         viewModelScope.launch {
             try {
-
                 _posts.value = WordpressApi.retrofitService.getBlogPosts(day_limit)
             }
             catch (e: Exception){
-                println(e)
-                //Log.d(LOG_TAG, e.toString())
+                Log.d(LOG_TAG, e.toString())
             }
         }
     }

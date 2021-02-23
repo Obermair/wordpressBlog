@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         )
 
         viewModel.posts.observeForever{
-            print(it)
+
             Log.d(LOG_TAG, "onSaveInstance(), counter: {${it}}")
             binding.count = it.count().toString()
         }
