@@ -16,16 +16,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val binding = DataBindingUtil.setContentView<ActivityMainBinding>(
-            this, R.layout.activity_main
-        )
 
-        binding.rvBlogPosts.layoutManager = LinearLayoutManager(this)
-        binding.rvBlogPosts.hasFixedSize()
 
-        viewModel.posts.observeForever {
-            binding.rvBlogPosts.adapter = BlogPostAdapter(it)
-        }
+
 
     }
 
