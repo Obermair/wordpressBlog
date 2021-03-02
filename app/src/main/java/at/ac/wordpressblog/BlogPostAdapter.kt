@@ -1,22 +1,28 @@
 package at.ac.wordpressblog
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import at.ac.wordpressblog.http.BlogPost
 import at.ac.wordpressblog.http.SourceUrl
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import java.time.format.DateTimeFormatter
 
 //todo: creating adapter class
 class BlogPostAdapter(val blogPosts: List<BlogPost>): RecyclerView.Adapter<BlogPostAdapter.ViewHolder>() {
     class ViewHolder(val card: View): RecyclerView.ViewHolder(card) {
 
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -29,12 +35,13 @@ class BlogPostAdapter(val blogPosts: List<BlogPost>): RecyclerView.Adapter<BlogP
 
     override fun getItemCount(): Int = blogPosts.size
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val blogPost = blogPosts[position]
 
         with(holder.card) {
             findViewById<TextView>(R.id.tv_title).text = "${blogPost.title.rendered}"
-            findViewById<TextView>(R.id.tv_datum).text = "${blogPost.date}"
+            findViewById<TextView>(R.id.tv_datum).text = "${blogPost.getDate().format(formatter)}"
 
             bindImage(findViewById<ImageView>(R.id.iv_card), blogPost.embedded.media[0].sourceUrl)
         }

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import at.ac.wordpressblog.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -19,10 +20,11 @@ class MainActivity : AppCompatActivity() {
             this, R.layout.activity_main
         )
 
-        viewModel.posts.observeForever{
+        binding.rvBlogPosts.layoutManager = LinearLayoutManager(this)
+        binding.rvBlogPosts.hasFixedSize()
 
-            Log.d(LOG_TAG, "onSaveInstance(), counter: {${it}}")
-            binding.count = it.count().toString()
+        viewModel.posts.observeForever {
+            binding.rvBlogPosts.adapter = BlogPostAdapter(it)
         }
 
     }
