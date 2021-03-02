@@ -1,6 +1,7 @@
 package at.ac.wordpressblog
 
 import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.net.toUri
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import at.ac.wordpressblog.http.BlogPost
 import at.ac.wordpressblog.http.SourceUrl
@@ -16,7 +18,7 @@ import com.bumptech.glide.request.RequestOptions
 import java.time.format.DateTimeFormatter
 
 //todo: creating adapter class
-class BlogPostAdapter(val blogPosts: List<BlogPost>): RecyclerView.Adapter<BlogPostAdapter.ViewHolder>() {
+class BlogPostAdapter(private val viewModel: BlogPostViewModel): RecyclerView.Adapter<BlogPostAdapter.ViewHolder>() {
     class ViewHolder(val card: View): RecyclerView.ViewHolder(card) {
 
     }
@@ -33,18 +35,31 @@ class BlogPostAdapter(val blogPosts: List<BlogPost>): RecyclerView.Adapter<BlogP
         return viewHolder;
     }
 
-    override fun getItemCount(): Int = blogPosts.size
+    override fun getItemCount(): Int {
+        var result = viewModel.posts.value?.size
+
+        return result ?: 0
+    }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val blogPost = blogPosts[position]
+        val blogPosts = viewModel
+            .posts
+            .value.let {
+                val blogPost = it!!.get(position)
+                with(holder.card) {
+                    setOnClickListener {
+                        viewModel.activePost = blogPost
+                        it.findNavController().navigate(R.id.action_homeFragment_to_detailFragment)
+                    }
+                    findViewById<TextView>(R.id.tv_title).text = "${blogPost.title.rendered}"
+                    findViewById<TextView>(R.id.tv_datum).text = "${blogPost.getDate().format(formatter)}"
 
-        with(holder.card) {
-            findViewById<TextView>(R.id.tv_title).text = "${blogPost.title.rendered}"
-            findViewById<TextView>(R.id.tv_datum).text = "${blogPost.getDate().format(formatter)}"
+                    bindImage(findViewById<ImageView>(R.id.iv_card), blogPost.embedded.media[0].sourceUrl)
+                }
+            }
 
-            bindImage(findViewById<ImageView>(R.id.iv_card), blogPost.embedded.media[0].sourceUrl)
-        }
     }
 
     fun bindImage(imgView: ImageView, imgUrl: String?) {
@@ -63,10 +78,5 @@ class BlogPostAdapter(val blogPosts: List<BlogPost>): RecyclerView.Adapter<BlogP
 
 }
 
-//todo: creating blog post card for recycler view
-//todo: connecting recycler view with the created card
-//todo: bind image
-//todo: creating a loader using Glide
-//todo: creating fragments for detail view
 //todo: navigation
 //todo: reloader

@@ -56,7 +56,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
 
         viewModel.posts.observeForever {
-            rvBlogPosts.adapter = BlogPostAdapter(it)
+            rvBlogPosts.adapter = BlogPostAdapter(viewModel)
             rvBlogPosts.layoutManager = LinearLayoutManager(this.context)
             rvBlogPosts.hasFixedSize()
         }
@@ -64,11 +64,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-
-    }
 
     companion object {
         /**

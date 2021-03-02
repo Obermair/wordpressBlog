@@ -21,6 +21,8 @@ class BlogPostViewModel: ViewModel(){
     public val posts: LiveData<List<BlogPost>> get() = _posts
     internal val LOG_TAG = MainActivity::class.java.simpleName
 
+    public var activePost: BlogPost? = null
+
     @RequiresApi(Build.VERSION_CODES.O)
     private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
