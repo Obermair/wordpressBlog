@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
             Log.d(LOG_TAG, "onSaveInstance(), counter: {${it}}")
             binding.count = it.count().toString()
         }
+
     }
 
 
