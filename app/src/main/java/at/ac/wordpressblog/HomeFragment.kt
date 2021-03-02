@@ -8,10 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import at.ac.wordpressblog.databinding.ActivityMainBinding
 import at.ac.wordpressblog.databinding.FragmentHomeBinding
+import kotlinx.android.synthetic.main.fragment_home.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -25,7 +27,7 @@ private const val ARG_PARAM2 = "param2"
  */
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
-    private val viewModel: BlogPostViewModel by viewModels()
+    private val viewModel: BlogPostViewModel by activityViewModels<BlogPostViewModel>()
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -45,24 +47,27 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        //val binding = FragmentHomeBinding.bind(this)
+
+        /*val binding = DataBindingUtil.setContentView<ActivityMainBinding>(
+            Activity().parent, R.layout.activity_main
+        )*/
+
+
+
+        viewModel.posts.observeForever {
+            rvBlogPosts.adapter = BlogPostAdapter(it)
+            rvBlogPosts.layoutManager = LinearLayoutManager(this.context)
+            rvBlogPosts.hasFixedSize()
+        }
+
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = FragmentHomeBinding.bind(view)
 
-        /*val binding = DataBindingUtil.setContentView<ActivityMainBinding>(
-            Activity().parent, R.layout.activity_main
-        )*/
-
-        binding.rvBlogPosts.layoutManager = LinearLayoutManager(this.context)
-        binding.rvBlogPosts.hasFixedSize()
-
-        viewModel.posts.observeForever {
-            binding.rvBlogPosts.adapter = BlogPostAdapter(it)
-        }
     }
 
     companion object {
