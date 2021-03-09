@@ -26,6 +26,7 @@ class BlogPost(
     val id: Int,
     val date: String,
     val title: Rendered,
+    val link: String,
     val content: Rendered,
     val excerpt: Rendered,
     @Json(name="_embedded")

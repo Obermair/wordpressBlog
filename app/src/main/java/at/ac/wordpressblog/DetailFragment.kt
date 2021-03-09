@@ -48,9 +48,11 @@ class DetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).supportActionBar?.title = viewModel.activePost!!.title.rendered
-        var content = viewModel.activePost!!.content.rendered.replace("\\", "")
-        wv_content.loadData(content, "text/html;charset=utf-8", "utf-8")
-        Log.d("Content: ", content);
+        //var content = viewModel.activePost!!.content.rendered.replace("\\", "")
+        //wv_content.loadData(content, "text/html;charset=utf-8", "utf-8")
+
+        wv_content.loadUrl(viewModel.activePost!!.link)
+
     }
 
     companion object {

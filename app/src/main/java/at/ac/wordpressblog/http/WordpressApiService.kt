@@ -13,6 +13,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 private const val BASE_URL = "https://www.htl-leonding.at/"
+//private const val BASE_URL = "http://172.17.213.112:8080/"
 
 private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
