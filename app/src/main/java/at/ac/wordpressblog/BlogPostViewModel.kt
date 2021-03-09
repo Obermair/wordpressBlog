@@ -36,7 +36,7 @@ class BlogPostViewModel: ViewModel(){
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun getBlogPosts(){
+    public fun getBlogPosts(){
         viewModelScope.launch {
             try {
                 _posts.value = WordpressApi.retrofitService.getBlogPosts(day_limit)

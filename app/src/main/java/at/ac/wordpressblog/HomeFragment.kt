@@ -1,12 +1,13 @@
 package at.ac.wordpressblog
 
 import android.app.Activity
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -52,18 +53,34 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         /*val binding = DataBindingUtil.setContentView<ActivityMainBinding>(
             Activity().parent, R.layout.activity_main
         )*/
+        setHasOptionsMenu(true)
 
+        return inflater.inflate(R.layout.fragment_home, container, false)
+    }
 
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel.posts.observeForever {
             rvBlogPosts.adapter = BlogPostAdapter(viewModel)
             rvBlogPosts.layoutManager = LinearLayoutManager(this.context)
             rvBlogPosts.hasFixedSize()
         }
 
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        super.onViewCreated(view, savedInstanceState)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId==R.id.refreshData){
+            viewModel.getBlogPosts()
+            /*rvBlogPosts.adapter?.notifyDataSetChanged()*/
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_main, menu)
+    }
 
     companion object {
         /**
